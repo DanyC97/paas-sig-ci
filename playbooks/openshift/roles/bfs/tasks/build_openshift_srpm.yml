@@ -73,3 +73,7 @@
   args:
     chdir: "{{ openshift_repo_path }}"
 
+- name: debug task
+  shell: git log -n 1 -p
+  args:
+    chdir: "{{ openshift_repo_path }}"
