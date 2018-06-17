@@ -5,7 +5,7 @@ env.BFS_PB = 'paas-ci/playbooks/openshift/bfs.yml'
 env.CBS_PB = 'paas-ci/playbooks/openshift/cbs.yml'
 env.TARGET_BASE_NAME = 'paas7-openshift-origin'
 env.TARGET_SFX_NAME = 'el7'
-env.PAAS_REPO = 'https://github.com/CentOS-PaaS-SIG/paas-sig-ci'
+env.PAAS_REPO = 'https://github.com/DanyC97/paas-sig-ci'
 env.VENV = env.JOB_NAME + '-' + UUID.randomUUID().toString().substring(0,5)
 
 properties(
@@ -15,7 +15,7 @@ properties(
                 parameters(
                         [
                                 string(defaultValue: 'v3.10.0-alpha.0', description: 'origin version', name: 'ORIGIN_VERSION'),
-                                string(defaultValue: 'openshift-ansible-3.10.0-0.67.0', description: 'openshift-ansible version', name: 'OA_VERSION'),
+                                string(defaultValue: 'openshift-ansible-3.9.0-0.53.0', description: 'openshift-ansible version', name: 'OA_VERSION'),
                                 string(defaultValue: '', description: 'target in the CBS build system', name: 'BUILD_TARGET'),
                                 booleanParam(defaultValue: true, description: 'build in CBS as a scratch build', name: 'SCRATCH'),
                                 booleanParam(defaultValue: true, description: 'build from the master branch', name: 'BE'),
@@ -23,7 +23,7 @@ properties(
                                 booleanParam(defaultValue: true, description: 'build openshift-ansible', name: 'BUILD_OA'),
                         ],
                 ),
-                pipelineTriggers([cron('H */3 * * *')]),
+                pipelineTriggers([cron('H */1 * * *')]),
         ]
 )
 
@@ -54,13 +54,13 @@ node (env.PAAS_SLAVE) {
                     dir('paas-ci') {
                         checkout poll: false,
                                     scm: [$class: 'GitSCM',
-                                       branches: [[name: "master"]],
+                                       branches: [[name: "dev-testbed"]],
                                        doGenerateSubmoduleConfigurations: false,
                                        extensions: [],
                                        submoduleCfg: [],
                                        userRemoteConfigs: [
                                                [
-                                                       refspec: '+refs/tags/*:refs/remotes/origin/tags/* +refs/heads/master:refs/remotes/origin/master',
+                                                       refspec: '+refs/tags/*:refs/remotes/origin/tags/* +refs/heads/dev-testbed:refs/remotes/origin/dev-testbed',
                                                        url: "${env.PAAS_REPO}"
                                                ]]]
                     }
