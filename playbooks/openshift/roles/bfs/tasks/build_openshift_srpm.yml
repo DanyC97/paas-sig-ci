@@ -27,13 +27,13 @@
     - origin_version.split('-')[0] | regex_replace('v') | version_compare('3.7', '>=', strict=True)
     - origin_version.split('-')[0] | regex_replace('v') | version_compare('3.8', '<', strict=True)
 
-# - name: "Update git vars in origin.spec"
-#   lineinfile:
-#     dest: "{{ openshift_repo_path }}/origin.spec"
-#     regexp: "^%global os_git_vars .*$"
-#     line: "%global os_git_vars OS_GIT_VERSION={{ origin_version }} OS_GIT_COMMIT= OS_GIT_MAJOR={{ origin_version.split('.')[0] }} OS_GIT_MINOR={{ origin_version.split('.')[1] }}+ OS_GIT_TREE_STATE='clean' OS_GIT_CATALOG_VERSION=''"
-#     backrefs: yes
-#     state: present
+- name: "Update git vars in origin.spec"
+  lineinfile:
+    dest: "{{ openshift_repo_path }}/origin.spec"
+    regexp: "^%global os_git_vars .*$"
+    line: "%global os_git_vars OS_GIT_VERSION={{ origin_version }} OS_GIT_COMMIT= OS_GIT_MAJOR={{ origin_version.split('.')[0] | regex_replace('v') }} OS_GIT_MINOR={{ origin_version.split('.')[1] }}+ OS_GIT_TREE_STATE='clean' OS_GIT_CATALOG_VERSION=''"
+    backrefs: yes
+    state: present
 
 - name: "Update git version in origin.spec"
   lineinfile:
